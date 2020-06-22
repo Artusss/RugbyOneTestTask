@@ -14,17 +14,49 @@ class MetrickController extends Controller
      */
     public function index()
     {
-        //
+        $metricks = Metrick::paginate(10);
+        return view("metricks.index", array(
+            "metricks" => $metricks
+        ));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show graph of metrick statistic.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function showStat()
     {
-        //
+        $metricks = Metrick::all();
+        
+        // PREPARE PARAMS FOR GRAPH
+        $mostPickedTimePeriod_raw = array();
+        $mostPickedDistribution   = array();
+        for($i = 0; $i < 24; $i++)
+        {
+            $mostPickedTimePeriod_raw[$i] = array();
+        }
+        foreach($metricks as $metrick)
+        {
+            $mostPickedTimePeriod_raw[$metrick->hour][] = $metrick->id;
+            $mostPickedDistribution[] = array(
+                "X" => $metrick->clientX,
+                "Y" => $metrick->clientY
+            );
+        }
+        $mostPickedTimePeriod = array();
+        foreach($mostPickedTimePeriod_raw as $hour => $period)
+        {
+            $mostPickedTimePeriod[$hour] = count($period);
+        }
+
+        // return view("metricks.stat", array(
+        //     "mostPickedTimePeriod" => $mostPickedTimePeriod
+        // ));
+
+        // $mostPickedTimePeriod
+        // $mostPickedDistribution
+        return response()->json($mostPickedTimePeriod, 200);
     }
 
     /**
@@ -35,7 +67,18 @@ class MetrickController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $metrick = new Metrick;
+        //json_decode(file_get_contents('php://input'), true);
+        $goodRequest = json_decode($request->getContent());
+        $metrick->site = $goodRequest->site;
+        $metrick->clientX = $goodRequest->clientX;
+        $metrick->clientY = $goodRequest->clientY;
+        $metrick->date = $goodRequest->date;
+        $metrick->hour = $goodRequest->hour;
+        $metrick->save();
+        //$goodRequest = json_decode($request->all(), true);
+        //$metrick = Metrick::create($goodRequest);
+        return response()->json($metrick, 201);
     }
 
     /**
@@ -44,32 +87,10 @@ class MetrickController extends Controller
      * @param  \App\Metrick  $metrick
      * @return \Illuminate\Http\Response
      */
-    public function show(Metrick $metrick)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Metrick  $metrick
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Metrick $metrick)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Metrick  $metrick
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Metrick $metrick)
-    {
-        //
+        $metrick = Metrick::findOrFail($id);
+        return response()->json($metrick, 200);
     }
 
     /**
@@ -78,8 +99,10 @@ class MetrickController extends Controller
      * @param  \App\Metrick  $metrick
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Metrick $metrick)
+    public function destroy($id)
     {
-        //
+        $metrick = Metrick::findOrFail($id);
+        $metrick->delete();
+        return response()->json(null, 204);
     }
 }

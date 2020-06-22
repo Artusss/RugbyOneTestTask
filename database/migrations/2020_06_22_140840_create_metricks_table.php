@@ -18,7 +18,8 @@ class CreateMetricksTable extends Migration
             $table->string('site');
             $table->integer('clientX')->default(0);
             $table->integer('clientY')->default(0);
-            $table->dateTime('date');
+            $table->date('date');
+            $table->integer('hour');
             $table->timestamps();
         });
     }

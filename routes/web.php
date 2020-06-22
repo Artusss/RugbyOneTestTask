@@ -14,3 +14,5 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get("/metricks", "MetrickController@index");
+Route::get("/metricks/stat", "MetrickController@showStat");
