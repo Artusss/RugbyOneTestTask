@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Metrick;
+use App\Charts\MetrickChart;
 use Illuminate\Http\Request;
 
 class MetrickController extends Controller
@@ -30,10 +31,12 @@ class MetrickController extends Controller
         $metricks = Metrick::all();
         
         // PREPARE PARAMS FOR GRAPH
-        $mostPickedTimePeriod_raw = array();
-        $mostPickedDistribution   = array();
+        $mostPickedTimePeriod_labels = array();
+        $mostPickedTimePeriod_raw    = array();
+        $mostPickedDistribution      = array();
         for($i = 0; $i < 24; $i++)
         {
+            $mostPickedTimePeriod_labels[] = $i;
             $mostPickedTimePeriod_raw[$i] = array();
         }
         foreach($metricks as $metrick)
@@ -54,9 +57,18 @@ class MetrickController extends Controller
         //     "mostPickedTimePeriod" => $mostPickedTimePeriod
         // ));
 
-        // $mostPickedTimePeriod
-        // $mostPickedDistribution
-        return response()->json($mostPickedTimePeriod, 200);
+        // // $mostPickedTimePeriod
+        // // $mostPickedDistribution
+        // return response()->json($mostPickedTimePeriod, 200);
+
+
+        $metrickChart = new MetrickChart;
+        $metrickChart->labels($mostPickedTimePeriod_labels);
+        $metrickChart->dataset('Metricks by day hours', 'line', $mostPickedTimePeriod);
+
+        return view('metricks.stat', array(
+            "metrickChart" => $metrickChart
+        ));
     }
 
     /**
