@@ -6,4 +6,8 @@
     <div style="width: 50%">
         {!! $metrickChart->container() !!}
     </div>
+    {{-- ChartScript --}}
+    @if($metrickChart)
+        {!! $metrickChart->script() !!}
+    @endif
 @endsection

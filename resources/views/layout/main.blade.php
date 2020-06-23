@@ -29,9 +29,5 @@
     <div id="app">
         @yield('content')
     </div>
-    {{-- ChartScript --}}
-    @if($metrickChart)
-        {!! $metrickChart->script() !!}
-    @endif
 </body>
 </html>
