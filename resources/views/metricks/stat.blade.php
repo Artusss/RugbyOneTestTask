@@ -1,13 +1,18 @@
 @extends('layout.main')
 
 @section('content')
-    <h1>Metrick Graphs</h1>
-
-    <div style="width: 50%">
-        {!! $metrickChart->container() !!}
+    <div class="container">
+        <div class="row">
+            <div class="col-md">
+                <h2>Metrick Graphs</h2>
+                <div>
+                    {!! $metrickChart->container() !!}
+                </div>
+                {{-- ChartScript --}}
+                @if($metrickChart)
+                    {!! $metrickChart->script() !!}
+                @endif
+            </div>
+        </div>
     </div>
-    {{-- ChartScript --}}
-    @if($metrickChart)
-        {!! $metrickChart->script() !!}
-    @endif
 @endsection
