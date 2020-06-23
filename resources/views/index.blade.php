@@ -1,16 +1,6 @@
 @extends('layout.main')
 @section('content')
     <h2>Тестовое задание для RugbyOne</h2>
-    <h3>Ссылка на задание : 
-        <a href="https://phptest.rb1.co/">
-            https://phptest.rb1.co/
-        </a>
-    </h3>
-    <h3>Ссылка на github данного проекта : 
-        <a href="https://github.com/Artusss/RugbyOneTestTask">
-            https://github.com/Artusss/RugbyOneTestTask
-        </a>
-    </h3>
     <h3>Документация по данному сервису :</h3>
     <ul>
         <li>
@@ -41,4 +31,14 @@
             Ответ представлен в формате json.
         </li>
     </ul>
+    <h4>Ссылка на задание : 
+        <a href="https://phptest.rb1.co/">
+            https://phptest.rb1.co/
+        </a>
+    </h4>
+    <h4>Ссылка на github данного проекта : 
+        <a href="https://github.com/Artusss/RugbyOneTestTask">
+            https://github.com/Artusss/RugbyOneTestTask
+        </a>
+    </h4>
 @endsection
