@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 Route::get("/metricks", "MetrickController@index");
 Route::get("/metricks/stat", "MetrickController@showStat");
