@@ -17,7 +17,7 @@ class MetricksTableSeeder extends Seeder
                 'site'    => 'somesite.com',
                 'clientX' => rand(0, 999),
                 'clientY' => rand(0, 999),
-                'date'    => "2020-06-23"
+                'date'    => "2020-06-23",
                 'hour'    => rand(0, 23),
             ]);
         }
