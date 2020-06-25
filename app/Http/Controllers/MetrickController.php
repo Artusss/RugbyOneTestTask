@@ -46,7 +46,7 @@ class MetrickController extends Controller
     {
         $metricks = Metrick::all();
         
-        $prepared_params = prepareGraphParams($metricks);
+        $prepared_params = $this->prepareGraphParams($metricks);
 
         $metrickChart = new MetrickChart;
         $metrickChart->labels($prepared_params["mostPickedTimePeriod_labels"]);
@@ -67,7 +67,7 @@ class MetrickController extends Controller
         $metricks = Metrick::where("site", $site)
             ->get();
         
-        $prepared_params = prepareGraphParams($metricks);
+        $prepared_params = $this->prepareGraphParams($metricks);
 
         $metrickChart = new MetrickChart;
         $metrickChart->labels($prepared_params["mostPickedTimePeriod_labels"]);
