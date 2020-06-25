@@ -86,7 +86,7 @@ class MetrickController extends Controller
         // $mostPickedDistribution      = array();
         for($i = 0; $i < 24; $i++)
         {
-            $mostPickedTimePeriod_labels[] = count($i) < 10 ? "0{$i}:00" : "{$i}:00";
+            $mostPickedTimePeriod_labels[] = $i < 10 ? "0{$i}:00" : "{$i}:00";
             $mostPickedTimePeriod_raw[$i] = array();
         }
         foreach($metricks as $metrick)
@@ -104,7 +104,7 @@ class MetrickController extends Controller
         }
         return array(
             "mostPickedTimePeriod"        => $mostPickedTimePeriod,
-            "mostPickedTimePeriod_labels" => $mostPickedTimePeriod_labels,
+            "mostPickedTimePeriod_labels" => $mostPickedTimePeriod_labels
             // "mostPickedDistribution"      => $mostPickedDistribution,
         );
     }
