@@ -16,3 +16,5 @@ Route::get('/', function () {
 });
 Route::get("/metricks", "MetrickController@index");
 Route::get("/metricks/stat", "MetrickController@showStat");
+Route::get("/metricks/{site}", "MetrickController@indexSite");
+Route::get("/metricks/{site}/stat", "MetrickController@showSiteStat");

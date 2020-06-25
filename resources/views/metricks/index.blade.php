@@ -1,6 +1,7 @@
 @extends('layout.main')
 
 @section('content')
+    <h3>{{ $site_slug }}</h3>
     <table class="table">
         <thead>
             <tr>

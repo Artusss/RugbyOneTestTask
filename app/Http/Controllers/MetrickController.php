@@ -17,6 +17,22 @@ class MetrickController extends Controller
     {
         $metricks = Metrick::paginate(10);
         return view("metricks.index", array(
+            "site_slug" => "For all sites",
+            "metricks" => $metricks
+        ));
+    }
+
+    /**
+     * Display a listing of current resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexSite($site)
+    {
+        $metricks = Metrick::where("site", $site)
+            ->paginate(10);
+        return view("metricks.index", array(
+            "site_slug" => "For " . $site,
             "metricks" => $metricks
         ));
     }
@@ -64,7 +80,52 @@ class MetrickController extends Controller
 
         $metrickChart = new MetrickChart;
         $metrickChart->labels($mostPickedTimePeriod_labels);
-        $metrickChart->dataset('Metricks by day hours', 'line', $mostPickedTimePeriod);
+        $metrickChart->dataset('Metricks by day hours (all sites)', 'line', $mostPickedTimePeriod);
+
+        return view('metricks.stat', array(
+            "metrickChart" => $metrickChart
+        ));
+    }
+
+    /**
+     * Show graph of metrick statistic for current site.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showSiteStat($site)
+    {
+        $metricks = Metrick::where("site", $site)
+            ->get();
+        
+        // PREPARE PARAMS FOR GRAPH
+        $mostPickedTimePeriod_labels = array();
+        $mostPickedTimePeriod_raw    = array();
+        $mostPickedDistribution      = array();
+        for($i = 0; $i < 24; $i++)
+        {
+            $mostPickedTimePeriod_labels[] = $i;
+            $mostPickedTimePeriod_raw[$i] = array();
+        }
+        foreach($metricks as $metrick)
+        {
+            $mostPickedTimePeriod_raw[$metrick->hour][] = $metrick->id;
+            $mostPickedDistribution[] = array(
+                "X" => $metrick->clientX,
+                "Y" => $metrick->clientY
+            );
+        }
+        $mostPickedTimePeriod = array();
+        foreach($mostPickedTimePeriod_raw as $hour => $period)
+        {
+            $mostPickedTimePeriod[$hour] = count($period);
+        }
+
+        // // $mostPickedTimePeriod
+        // // $mostPickedDistribution
+
+        $metrickChart = new MetrickChart;
+        $metrickChart->labels($mostPickedTimePeriod_labels);
+        $metrickChart->dataset('Metricks by day hours (' . $site . ')', 'line', $mostPickedTimePeriod);
 
         return view('metricks.stat', array(
             "metrickChart" => $metrickChart
